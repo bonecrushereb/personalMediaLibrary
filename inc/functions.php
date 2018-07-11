@@ -13,7 +13,7 @@
     $output = array();
 
     foreach ($catalog as $id => $item) {
-      if(strtolower($category == null OR $category) == strtolower($item['category'])) {
+      if(strtolower($category == null) OR $category == strtolower($item['category'])) {
         $sort = $item['title'];
         $sort = ltrim($sort, 'The ');
         $sort = ltrim($sort, 'A ');
