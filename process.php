@@ -11,4 +11,7 @@ $email_body .= "Email: " . $email . "\n";
 $email_body .= "Details: " . $details . "\n";
 echo $email_body;
 echo "</pre>";
+
+
+header('location:thanks.php');
 ?>
