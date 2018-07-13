@@ -1,4 +1,8 @@
 <?php 
+use PHPMailer\PHPMailer\PHPMailer;
+
+require 'vendor/PHPMailer/src/Exception.php';
+require 'vendor/PHPMailer/src/PHPMailer.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 
