@@ -14,8 +14,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     echo 'Please fill in the required fields: Name, Email and/or Details';
     exit;
   }
+
   if ($_POST['address'] != '') {
     echo 'Bad Form Input!';
+    exit;
+  }
+
+  if (!PHPMailer::validateAddress($email)) {
+    echo 'Invalid Email Address';
     exit;
   }
 
