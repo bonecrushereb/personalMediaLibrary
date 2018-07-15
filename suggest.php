@@ -25,14 +25,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     exit;
   }
 
-  echo "<pre>";
   $email_body = "";
   $email_body .= "Name: " . $name . "\n";
   $email_body .= "Email: " . $email . "\n";
   $email_body .= "Details: " . $details . "\n";
-  echo $email_body;
-  echo "</pre>";
 
+
+ $mail = new PHPMailer;
+ $mail->isSMTP();
+ $mail->Host = 'localhost';
+ $mail->Port = 2500;
+ $mail->CharSet = 'utf-8';
+ $mail->setFrom('bonecrushereb@gmail.com', $name);
+ $mail->addReplyTo($email, $name);
+ $mail->addAddress('bonecrushereb@gmail.com', 'Ben Nolan');
+ $mail->Subject = 'Library Suggestion from ' . $name;
+ $mail->Body = $email_body;
+ if (!$mail->send()) {
+    echo "Mailer Error: " . $mail->ErrorInfo;
+    exit;
+ }
 
   header('location:suggest.php?status=thanks');
 }
