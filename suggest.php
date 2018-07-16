@@ -3,6 +3,7 @@ use PHPMailer\PHPMailer\PHPMailer;
 
 require 'vendor/PHPMailer/src/Exception.php';
 require 'vendor/PHPMailer/src/PHPMailer.php';
+require 'vendor/PHPMailer/src/SMTP.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 
@@ -12,11 +13,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
   $title = trim(filter_input(INPUT_POST, 'title', FILTER_SANITIZE_STRING));
   $format = trim(filter_input(INPUT_POST, 'format', FILTER_SANITIZE_STRING));
   $genre = trim(filter_input(INPUT_POST, 'genre', FILTER_SANITIZE_STRING));
-  $year = trim(filter_input(INPUT_POST, 'year', FILTER_SANITIZE_STRING));
+  $year = trim(filter_input(INPUT_POST, 'year', FILTER_SANITIZE_NUMBER_INT));
   $details = trim(filter_input(INPUT_POST, 'details', FILTER_SANITIZE_SPECIAL_CHARS));
 
-  if ($name == '' || $email == '' || $details == '') {
-    echo 'Please fill in the required fields: Name, Email and/or Details';
+  if ($name == '' || $email == '' || $details == '' || $category == '' || $title == '') {
+    echo 'Please fill in the required fields: Name, Email, Details, Category and Title';
     exit;
   }
 
@@ -33,14 +34,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
   $email_body = "";
   $email_body .= "Name: " . $name . "\n";
   $email_body .= "Email: " . $email . "\n";
+  $email_body .= "\n\nSuggested Item\n\n";
+  $email_body .= "Category: " . $category . "\n";
+  $email_body .= "Title: " . $title . "\n";
+  $email_body .= "Format: " . $format . "\n";
+  $email_body .= "Genre: " . $genre . "\n";
+  $email_body .= "Details: " . $details . "\n";
+  $email_body .= "Year: " . $year . "\n";
   $email_body .= "Details: " . $details . "\n";
 
 
  $mail = new PHPMailer;
  $mail->isSMTP();
- $mail->Host = 'localhost';
- $mail->Port = 2500;
- $mail->CharSet = 'utf-8';
+
+ $mail->SMTPDebug = 2;
+ $mail->Host = 'smtp.gmail.com';
+ $mail->Port = 587;
+ $mail->SMTPSecure = 'tls';
+ $mail->SMTPAuth = true;
+ $mail->Username = "bonecrushereb@gmail.com";
+ $mail->Password = "trabegzsjqozqndw";
  $mail->setFrom('bonecrushereb@gmail.com', $name);
  $mail->addReplyTo($email, $name);
  $mail->addAddress('bonecrushereb@gmail.com', 'Ben Nolan');
