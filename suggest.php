@@ -71,9 +71,9 @@ $pageTitle = 'Suggest a Media Item';
 $section = 'suggest';
 
 include('inc/header.php');
-// if(isset($error_message)) {
-//   echo $error_message;
-// }
+if(isset($error_message)) {
+  echo $error_message;
+}
 ?>
 
 <div class="section page">
