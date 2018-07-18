@@ -71,9 +71,6 @@ $pageTitle = 'Suggest a Media Item';
 $section = 'suggest';
 
 include('inc/header.php');
-if(isset($error_message)) {
-  echo $error_message;
-}
 ?>
 
 <div class="section page">
@@ -83,8 +80,12 @@ if(isset($error_message)) {
   if (isset($_GET['status']) && $_GET['status'] == 'thanks') {
     echo "<p>Thanks for the email. I will check out your suggestion shortly!</p>";
   } else {
+      if(isset($error_message)) {
+        echo '<p class="message">' . $error_message . '</p>';
+      } else {        
+        echo '<p>If something is missing, let me know! Send me an email.</p>';
+      }
   ?>
-  <p>If something is missing, let me know! Send me an email.</p>
   <form method="post" action="suggest.php">
     <table>
       <tr>
