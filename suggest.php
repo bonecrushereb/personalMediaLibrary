@@ -20,11 +20,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     $error_message = 'Please fill in the required fields: Name, Email, Details, Category and Title';
   }
 
-  if ($_POST['address'] != '') {
+  if (!isset($error_message) && $_POST['address'] != '') {
     $error_message = 'Bad Form Input!';
   }
 
-  if (!PHPMailer::validateAddress($email)) {
+  if (!isset($error_message) && !PHPMailer::validateAddress($email)) {
     $error_message = 'Invalid Email Address';
   }
 
