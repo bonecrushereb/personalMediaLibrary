@@ -240,7 +240,7 @@ include('inc/header.php');
           <label for="details">Suggest Item Details</label>            
         </th>
         <td>
-          <textarea name="details" id="details"><?php if(isset($details)) echo $details; ?></textarea>
+          <textarea name="details" id="details"><?php if(isset($details)) echo htmlspecialchars($_POST['details']); ?></textarea>
         </td>
       </tr>
       <tr style="display: none;">
