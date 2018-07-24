@@ -10,9 +10,10 @@
   }
 
   try {
-    $results = $db -> query('SELECT title, category FROM Media');
-    echo 'results achieved';
+    $results = $db -> query('SELECT title, category, img FROM Media');
   } catch (Exception $e) {
     echo 'unable to recieve results';
     exit;
   }
+
+  $catalog = $results -> fetchAll();
