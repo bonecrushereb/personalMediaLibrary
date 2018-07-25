@@ -1,19 +1,19 @@
-</div><!--end content -->
+</div><!-- end content -->
 
-  <div class="footer">
+	<div class="footer">
 
-    <div class="wrapper">
+		<div class="wrapper">
 
-      <ul>    
-        <li><a href="http://twitter.com/treehouse">Twitter</a></li>
-        <li><a href="https://www.facebook.com/TeamTreehouse">Facebook</a></li>
-      </ul>
+			<ul>		
+				<li><a href="http://twitter.com/treehouse">Twitter</a></li>
+				<li><a href="https://www.facebook.com/TeamTreehouse">Facebook</a></li>
+			</ul>
 
-      <p>&copy;<?php echo date('Y'); ?> Personal Media Library</p>
+			<p>&copy;<?php echo date("Y"); ?> Personal Media Library</p>
 
-    </div>
-  
-  </div>
+		</div>
+	
+	</div>
 
 </body>
 </html>

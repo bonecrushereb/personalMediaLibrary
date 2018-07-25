@@ -8,12 +8,3 @@
     echo $e->getMessage();
     exit;
   }
-
-  try {
-    $results = $db -> query('SELECT title, category, img FROM Media');
-  } catch (Exception $e) {
-    echo 'unable to recieve results';
-    exit;
-  }
-
-  $catalog = $results -> fetchAll();
