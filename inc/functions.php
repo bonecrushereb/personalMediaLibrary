@@ -1,18 +1,37 @@
 <?php
-function full_catalog_array() {
+function fullCatalogArray() {
     include("connection.php");
 
     try {
        $results = $db->query("SELECT title, category,img FROM Media");
     } catch (Exception $e) {
-       echo "Unable to retrieved results";
+       echo $e;
        exit;
     }
     
     $catalog = $results->fetchAll();
     return $catalog;
 }
-function get_item_html($id,$item) {
+function singleCatalogArray($id) {
+    include("connection.php");
+
+    try {
+       $results = $db->query("SELECT title, category, img, format, year , genre, publisher, isbn
+                              FROM Media
+                              JOIN Genres ON Media.genre_id = Genres.genre_id
+                              LEFT OUTER JOIN Books ON Media.media_id = Books.media_id
+                              WHERE Media.media_id = $id");
+    } catch (Exception $e) {
+       echo $e;
+       exit;
+    }
+    
+    $catalog = $results->fetch();
+    return $catalog;
+}
+var_dump(singleCatalogArray(1));
+
+function getItemHtml($id,$item) {
     $output = "<li><a href='details.php?id="
         . $id . "'><img src='" 
         . $item["img"] . "' alt='" 
@@ -22,7 +41,7 @@ function get_item_html($id,$item) {
     return $output;
 }
 
-function array_category($catalog,$category) {
+function arrayCategory($catalog,$category) {
     $output = array();
     
     foreach ($catalog as $id => $item) {
