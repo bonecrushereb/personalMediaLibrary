@@ -3,7 +3,7 @@ function fullCatalogArray() {
     include("connection.php");
 
     try {
-       $results = $db->query("SELECT title, category,img FROM Media");
+       $results = $db->query("SELECT media_id, title, category,img FROM Media");
     } catch (Exception $e) {
        echo $e;
        exit;
@@ -12,7 +12,7 @@ function fullCatalogArray() {
     $catalog = $results->fetchAll();
     return $catalog;
 }
-function singleCatalogArray($id) {
+function singleItemArray($id) {
     include("connection.php");
 
     try {
@@ -29,11 +29,10 @@ function singleCatalogArray($id) {
     $catalog = $results->fetch();
     return $catalog;
 }
-var_dump(singleCatalogArray(1));
 
 function getItemHtml($id,$item) {
     $output = "<li><a href='details.php?id="
-        . $id . "'><img src='" 
+        . $item['media_id'] . "'><img src='" 
         . $item["img"] . "' alt='" 
         . $item["title"] . "' />" 
         . "<p>View Details</p>"

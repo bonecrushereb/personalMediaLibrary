@@ -1,12 +1,10 @@
 <?php 
 include("inc/functions.php");
-$catalog = fullCatalogArray();
 
 if (isset($_GET["id"])) {
-    $id = $_GET["id"];
-    if (isset($catalog[$id])) {
-        $item = $catalog[$id];
-    }
+    $id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
+    $item = singleItemArray($id);
+    var_dump($item);
 }
 
 if (!isset($item)) {
