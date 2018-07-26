@@ -7,7 +7,7 @@ if (isset($_GET["id"])) {
     var_dump($item);
 }
 
-if (!isset($item)) {
+if (empty($item)) {
     header("location:catalog.php");
     exit;
 }

@@ -16,11 +16,13 @@ function singleItemArray($id) {
     include("connection.php");
 
     try {
-       $results = $db->query("SELECT title, category, img, format, year , genre, publisher, isbn
+       $results = $db->prepare("SELECT title, category, img, format, year , genre, publisher, isbn
                               FROM Media
                               JOIN Genres ON Media.genre_id = Genres.genre_id
                               LEFT OUTER JOIN Books ON Media.media_id = Books.media_id
-                              WHERE Media.media_id = $id");
+                              WHERE Media.media_id = ?");
+       $results->bindParam(1, $id, PDO::PARAM_INT);
+       $results->execute();
     } catch (Exception $e) {
        echo $e;
        exit;
