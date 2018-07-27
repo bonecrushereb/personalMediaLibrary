@@ -20,7 +20,7 @@ function singleItemArray($id) {
                               FROM Media
                               JOIN Genres ON Media.genre_id = Genres.genre_id
                               LEFT OUTER JOIN Books ON Media.media_id = Books.media_id
-                              WHERE Media_People.media_id = ?");
+                              WHERE Media.media_id = ?");
        $results->bindParam(1, $id, PDO::PARAM_INT);
        $results->execute();
     } catch (Exception $e) {
@@ -31,15 +31,18 @@ function singleItemArray($id) {
     $item = $results->fetch();
     if(empty($item)) return $item;
     try {
-       $results = $db->prepare("SELECT fullName, role
+       $results = $db->prepare("SELECT fullname, role
                               FROM Media_People
-                              JOIN People ON Media.People.people_id = People.people_id
-                              WHERE Media.media_id = ?");
+                              JOIN People ON Media_People.people_id = People.people_id
+                              WHERE Media_People.media_id = ?");
        $results->bindParam(1, $id, PDO::PARAM_INT);
        $results->execute();
     } catch (Exception $e) {
        echo $e;
        exit;
+    }
+    while ($row = $results->fetch(PDO::FETCH_ASSOC)) {
+        $item[$row['role']][] = $row['fullname'];
     }
     return $item;
 }
