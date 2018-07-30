@@ -3,7 +3,7 @@ include("inc/functions.php");
 
 $pageTitle = "Full Catalog";
 $section = null;
-$itemPagination = 8;
+$itemPerPage = 8;
 
 if (isset($_GET["cat"])) {
     if ($_GET["cat"] == "books") {
@@ -27,6 +27,20 @@ if (empty($currentPage)) {
 }
 
 $totalItems = getCatalogCount($section);
+$totalPages = ceil($totalItems / $itemsPerPage);
+
+$limitResults = '';
+if (!empty($section)) {
+    $limitResults = 'cat=' .  $section . '&';
+}
+
+if ($currentPage > $totalPages) {
+    header('location:catalog.php?' . $limitResults . 'pg=' . $totalPages);
+} elseif($currentPage < 1) {
+    header('location:catalog.php?' . $limitResults . 'pg=1');
+}
+
+$offset = ($currentPage - 1) * $itemsPerPage;
 
 if (empty($section)) {
     $catalog = fullCatalogArray();
