@@ -47,7 +47,24 @@ function singleItemArray($id) {
     return $item;
 }
 
-function getItemHtml($id,$item) {
+function randomCatalogArray() {
+    include("connection.php");
+
+    try {
+       $results = $db->query("SELECT media_id, title, category,img 
+                              FROM Media
+                              ORDER BY RAND()
+                              LIMIT 4");
+    } catch (Exception $e) {
+       echo $e;
+       exit;
+    }
+    
+    $catalog = $results->fetchAll();
+    return $catalog;
+}
+
+function getItemHtml($item) {
     $output = "<li><a href='details.php?id="
         . $item['media_id'] . "'><img src='" 
         . $item["img"] . "' alt='" 
