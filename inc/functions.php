@@ -3,7 +3,16 @@ function fullCatalogArray() {
     include("connection.php");
 
     try {
-       $results = $db->query("SELECT media_id, title, category,img FROM Media");
+       $results = $db->query("SELECT media_id, title, category,img 
+                              FROM Media
+                              ORDER BY
+                                REPLACE(
+                                   REPLACE(
+                                     REPLACE(title,'The ',''),
+                                        'An ', ''
+                                       ),
+                                       'A ', ''
+                                     )");
     } catch (Exception $e) {
        echo $e;
        exit;
@@ -12,6 +21,7 @@ function fullCatalogArray() {
     $catalog = $results->fetchAll();
     return $catalog;
 }
+
 function singleItemArray($id) {
     include("connection.php");
 
@@ -55,6 +65,34 @@ function randomCatalogArray() {
                               FROM Media
                               ORDER BY RAND()
                               LIMIT 4");
+    } catch (Exception $e) {
+       echo $e;
+       exit;
+    }
+    
+    $catalog = $results->fetchAll();
+    return $catalog;
+}
+
+function categoryCatalogArray($category) {
+    include("connection.php");
+    $category = strtolower($category);
+
+    try {
+       $results = $db->prepare("SELECT media_id, title, category,img 
+                                FROM Media
+                                WHERE LOWER(category) = ?
+                                ORDER BY
+                                REPLACE(
+                                   REPLACE(
+                                     REPLACE(title,'The ',''),
+                                        'An ', ''
+                                       ),
+                                       'A ', ''
+                                     )"
+                                   );
+       $results -> bindParam(1, $category, PDO::PARAM_STR);
+       $results -> execute();
     } catch (Exception $e) {
        echo $e;
        exit;
