@@ -3,6 +3,7 @@ include("inc/functions.php");
 
 $pageTitle = "Full Catalog";
 $section = null;
+$itemPagination = 8;
 
 if (isset($_GET["cat"])) {
     if ($_GET["cat"] == "books") {
@@ -16,6 +17,16 @@ if (isset($_GET["cat"])) {
         $section = "music";
     }
 }
+
+if (isset($_GET['pg'])) {
+    $currentPage = filter_input(INPUT_GET, 'pg', FILTER_SANITIZE_NUMBER_INT);
+}
+
+if (empty($currentPage)) {
+    $currentPage = 1;
+}
+
+$totalItems = getCatalogCount($section);
 
 if (empty($section)) {
     $catalog = fullCatalogArray();
