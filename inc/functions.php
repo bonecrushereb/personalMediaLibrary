@@ -6,7 +6,7 @@ function getCatalogCount($category = null) {
     try {
       $sql = "SELECT COUNT(media_id) FROM Media";
       if(!empty($category)) {
-        $result = $db -> prepare($sql . "WHERE LOWER(category) = ?");
+        $result = $db -> prepare($sql . " WHERE LOWER(category) = ?");
         $result -> bindParam(1, $category, PDO::PARAM_STR);
       } else {
         $result = $db -> prepare($sql);
@@ -19,20 +19,28 @@ function getCatalogCount($category = null) {
     $count = $result -> fetchColumn(0);
     return $count;
 }
-function fullCatalogArray() {
+function fullCatalogArray($limit = null, $offset = 0) {
     include("connection.php");
 
     try {
-       $results = $db->query("SELECT media_id, title, category,img 
-                              FROM Media
-                              ORDER BY
-                                REPLACE(
-                                   REPLACE(
-                                     REPLACE(title,'The ',''),
-                                        'An ', ''
-                                       ),
-                                       'A ', ''
-                                     )");
+       $sql = "SELECT media_id, title, category,img 
+               FROM Media
+               ORDER BY
+                REPLACE(
+                  REPLACE(
+                    REPLACE(title,'The ',''),
+                      'An ', ''
+                      ),
+                      'A ', ''
+                    )";
+        if (is_integer($limit)) {
+          $results = $db -> prepare($sql . " LIMIT ? OFFSET ?");
+          $results -> bindParam(1, $limit, PDO::PARAM_INT);
+          $results -> bindParam(2, $offset, PDO::PARAM_INT);    
+        } else {
+          $results = $db -> prepare($sql);          
+        }
+        $results -> execute();
     } catch (Exception $e) {
        echo $e;
        exit;
@@ -94,24 +102,32 @@ function randomCatalogArray() {
     return $catalog;
 }
 
-function categoryCatalogArray($category) {
+function categoryCatalogArray($category, $limit = null, $offset = 0) {
     include("connection.php");
     $category = strtolower($category);
 
     try {
-       $results = $db->prepare("SELECT media_id, title, category,img 
-                                FROM Media
-                                WHERE LOWER(category) = ?
-                                ORDER BY
-                                REPLACE(
-                                   REPLACE(
-                                     REPLACE(title,'The ',''),
-                                        'An ', ''
-                                       ),
-                                       'A ', ''
-                                     )"
-                                   );
-       $results -> bindParam(1, $category, PDO::PARAM_STR);
+       $sql = "SELECT media_id, title, category,img 
+               FROM Media
+               WHERE LOWER(category) = ?
+               ORDER BY
+                REPLACE(
+                   REPLACE(
+                     REPLACE(title,'The ',''),
+                        'An ', ''
+                       ),
+                       'A ', ''
+                     )";
+       if (is_integer($limit)) {
+         $results = $db -> prepare($sql . " LIMIT ? OFFSET ?");
+         $results -> bindParam(1, $category, PDO::PARAM_STR);
+         $results -> bindParam(2, $limit, PDO::PARAM_INT);
+         $results -> bindParam(3, $offset, PDO::PARAM_INT);    
+       } else {
+         $results = $db -> prepare($sql);
+         $results -> bindParam(1, $category, PDO::PARAM_STR);
+
+       }
        $results -> execute();
     } catch (Exception $e) {
        echo $e;

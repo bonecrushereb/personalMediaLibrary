@@ -3,7 +3,7 @@ include("inc/functions.php");
 
 $pageTitle = "Full Catalog";
 $section = null;
-$itemPerPage = 8;
+$itemsPerPage = 8;
 
 if (isset($_GET["cat"])) {
     if ($_GET["cat"] == "books") {
@@ -31,7 +31,7 @@ $totalPages = ceil($totalItems / $itemsPerPage);
 
 $limitResults = '';
 if (!empty($section)) {
-    $limitResults = 'cat=' .  $section . '&';
+    $limitResults = "cat=" .  $section . "&";
 }
 
 if ($currentPage > $totalPages) {
@@ -43,9 +43,9 @@ if ($currentPage > $totalPages) {
 $offset = ($currentPage - 1) * $itemsPerPage;
 
 if (empty($section)) {
-    $catalog = fullCatalogArray();
+    $catalog = fullCatalogArray($itemsPerPage, $offset);
 } else {
-    $catalog = categoryCatalogArray($section);
+    $catalog = categoryCatalogArray($section, $itemsPerPage, $offset);
 }
 
 include("inc/header.php"); ?>
