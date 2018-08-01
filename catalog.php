@@ -48,6 +48,21 @@ if (empty($section)) {
     $catalog = categoryCatalogArray($section, $itemsPerPage, $offset);
 }
 
+   $pagination = "<div class=\"pagination\">";
+   $pagination .= "Pages: "; 
+   for ($i=1; $i <= $totalPages; $i++) {
+    if ($i == $currentPage) {
+        $pagination .= " <span>$i</span>";
+    } else {
+        $pagination .= " <a href='catalog.php?";
+        if (!empty($section)) {
+            $pagination .= "cat=" . $section . '&';   
+        }
+        $pagination .= "pg=$i'>$i</a>";
+        }
+    }
+   $pagination .= "</div>";
+
 include("inc/header.php"); ?>
 
 <div class="section catalog page">
@@ -59,7 +74,7 @@ include("inc/header.php"); ?>
             echo "<a href='catalog.php'>Full Catalog</a> &gt; ";
         }
         echo $pageTitle; ?></h1>
-        
+        <?php echo $pagination; ?>
         <ul class="items">
             <?php
             foreach ($catalog as $item) {
@@ -67,7 +82,7 @@ include("inc/header.php"); ?>
             }
             ?>
         </ul>
-        
+        <?php echo $pagination; ?>
     </div>
 </div>
 
