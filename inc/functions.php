@@ -138,6 +138,34 @@ function categoryCatalogArray($category, $limit = null, $offset = 0) {
     return $catalog;
 }
 
+function genreArray($category = null) {
+  $cateogry = strtolower($category);
+  include('connection.php');
+
+  try {
+    $sql = "SELECT genre, category "
+        .  " FROM Genres "
+        .  " JOIN Genre_Categories "
+        .  " ON Genres.genre_id = Genre_Categories.genre_id ";
+    if (!empty($category)) {
+      $results = $db -> prepare($sql 
+                            . " WHERE LOWER(category) = ? "
+                            . " ORDER BY genre");
+      $results -> bindParams(1, $category, PDO::PARAM_STR);
+    } else {
+      $results = $db -> prepare($sql . " ORDER BY genre");
+    }
+    $results -> execute();
+  } catch (Exception $e) {
+   echo $e; 
+  }
+  $genres = array();
+  while($row = $results->fetch(PDO::FETCH_ASSOC)) {
+    $genres[$row["category"]][] = $row["genre"];
+  }
+  return $genre;
+}
+
 function getItemHtml($item) {
     $output = "<li><a href='details.php?id="
         . $item['media_id'] . "'><img src='" 
