@@ -170,7 +170,7 @@ include("inc/header.php");
                         <option value="">Select One</option>
                         <?php
                             $genreArray = genreArray();
-                            foreach($genreArray as $category=>$options) {
+                            foreach ($genreArray as $category=>$options) {
                                 echo "<optgroup label=\"$category\">";
                                 foreach($options as $option) {
                                     echo "<option value=\"$option\"";

@@ -139,11 +139,10 @@ function categoryCatalogArray($category, $limit = null, $offset = 0) {
 }
 
 function genreArray($category = null) {
-  $cateogry = strtolower($category);
+  $category = strtolower($category);
   include('connection.php');
-
   try {
-    $sql = "SELECT genre, category "
+    $sql = "SELECT genre, category"
         .  " FROM Genres "
         .  " JOIN Genre_Categories "
         .  " ON Genres.genre_id = Genre_Categories.genre_id ";
@@ -163,7 +162,7 @@ function genreArray($category = null) {
   while($row = $results->fetch(PDO::FETCH_ASSOC)) {
     $genres[$row["category"]][] = $row["genre"];
   }
-  return $genre;
+  return $genres;
 }
 
 function getItemHtml($item) {
