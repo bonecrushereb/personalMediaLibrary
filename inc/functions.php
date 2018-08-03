@@ -1,13 +1,16 @@
 <?php
-function getCatalogCount($category = null) {
+function getCatalogCount($category = null, $search = null) {
     $category = strtolower($category);
     include("connection.php");
 
     try {
       $sql = "SELECT COUNT(media_id) FROM Media";
-      if(!empty($category)) {
-        $result = $db -> prepare($sql . " WHERE LOWER(category) = ?");
-        $result -> bindParam(1, $category, PDO::PARAM_STR);
+      if(!empty($search)) {
+        $results = $db->prepare($sql . " WHERE title LIKE ?");
+        $results -> bindValue(1, '%' . $search . '%', PDO::PARAM_STR);
+      } elseif(!empty($category)) {
+        $results = $db -> prepare($sql . " WHERE LOWER(category) = ?");
+        $results -> bindParam(1, $category, PDO::PARAM_STR);
       } else {
         $result = $db -> prepare($sql);
       }

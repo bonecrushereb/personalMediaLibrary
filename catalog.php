@@ -3,6 +3,7 @@ include("inc/functions.php");
 
 $pageTitle = "Full Catalog";
 $section = null;
+$search = null;
 $itemsPerPage = 8;
 
 if (isset($_GET["cat"])) {
@@ -20,10 +21,10 @@ if (isset($_GET["cat"])) {
 
 if (isset($_GET['pg'])) {
     $currentPage = filter_input(INPUT_GET, 'pg', FILTER_SANITIZE_NUMBER_INT);
-}
-
-if (empty($currentPage)) {
+}elseif (empty($currentPage)) {
     $currentPage = 1;
+}elseif (isset($_GET['search'])) {
+    $search = filter_input(INPUT_GET, 'search', FILTER_SANITIZE_STRING);
 }
 
 $totalItems = getCatalogCount($section);
