@@ -21,13 +21,13 @@ if (isset($_GET["cat"])) {
 
 if (isset($_GET['pg'])) {
     $currentPage = filter_input(INPUT_GET, 'pg', FILTER_SANITIZE_NUMBER_INT);
-}elseif (empty($currentPage)) {
+}else if (empty($currentPage)) {
     $currentPage = 1;
-}elseif (isset($_GET['search'])) {
-    $search = filter_input(INPUT_GET, 'search', FILTER_SANITIZE_STRING);
+}else if (isset($_GET['s'])) {
+  $search = filter_input(INPUT_GET,"s",FILTER_SANITIZE_STRING);
 }
 
-$totalItems = getCatalogCount($section);
+$totalItems = getCatalogCount($section, $search);
 $totalPages = ceil($totalItems / $itemsPerPage);
 
 $limitResults = '';
@@ -43,10 +43,12 @@ if ($currentPage > $totalPages) {
 
 $offset = ($currentPage - 1) * $itemsPerPage;
 
-if (empty($section)) {
-    $catalog = fullCatalogArray($itemsPerPage, $offset);
+if (!empty($search)) {
+  $catalog = searchCatalogArray($search,$itemsPerPage,$offset);
+} else if (empty($section)) {
+  $catalog = fullCatalogArray($itemsPerPage,$offset);
 } else {
-    $catalog = categoryCatalogArray($section, $itemsPerPage, $offset);
+  $catalog = categoryCatalogArray($section,$itemsPerPage,$offset);
 }
 
    $pagination = "<div class=\"pagination\">";

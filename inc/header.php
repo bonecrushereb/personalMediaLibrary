@@ -24,9 +24,9 @@
 
   <div class="search">
     <form method="get" action="catalog.php">
-      <label for="search">Search: </label>
-      <input type="text" name="search" id="search">
-      <input type="submit" value="submit">
+      <label for="s">Search: </label>
+      <input type="text" name="s" id="s">
+      <input type="submit" value="go">
     </form>/
   </div>
 
