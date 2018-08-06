@@ -19,12 +19,14 @@ if (isset($_GET["cat"])) {
     }
 }
 
-if (isset($_GET['pg'])) {
-    $currentPage = filter_input(INPUT_GET, 'pg', FILTER_SANITIZE_NUMBER_INT);
-}else if (empty($currentPage)) {
-    $currentPage = 1;
-}else if (isset($_GET['s'])) {
+if (isset($_GET["s"])) {
   $search = filter_input(INPUT_GET,"s",FILTER_SANITIZE_STRING);
+}
+if (isset($_GET["pg"])) {
+  $currentPage = filter_input(INPUT_GET,"pg",FILTER_SANITIZE_NUMBER_INT);
+}
+if (empty($currentPage)) {
+  $currentPage = 1;
 }
 
 $totalItems = getCatalogCount($section, $search);
