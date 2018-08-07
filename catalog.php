@@ -35,6 +35,12 @@ $offset = 0;
 if ($totalItems >0 ) {
   $totalPages = ceil($totalItems / $itemsPerPage);
 
+  $limitResults = "";
+  if (!empty($search)) {
+    $limitResults = "s=" . urlencode(htmlspecialchars($search)) . "&";
+    } else (!empty($section)) {
+    $limitResults = "cat=" . $section . "&";
+  }
   
   if ($currentPage > $totalPages) {
     header("location:catalog.php?" 
