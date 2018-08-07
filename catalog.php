@@ -29,21 +29,45 @@ if (empty($currentPage)) {
   $currentPage = 1;
 }
 
-$totalItems = getCatalogCount($section, $search);
-$totalPages = ceil($totalItems / $itemsPerPage);
+$totalItems = getCatalogCount($section,$search);
+$totalPages = 1;
+$offset = 0;
+if ($totalItems >0 ) {
+  $totalPages = ceil($totalItems / $itemsPerPage);
 
-$limitResults = '';
-if (!empty($section)) {
-    $limitResults = "cat=" .  $section . "&";
+  $limitResults = "";
+  if (!empty($section)) {
+    $limitResults = "cat=" . $section . "&";
+  }
+  
+  if ($currentPage > $totalPages) {
+    header("location:catalog.php?" 
+           . $limitResults 
+           . "pg=".$totalPages);
+  }
+  if ($currentPage < 1) {
+    header("location:catalog.php?"
+           . $limit_results
+           . "pg=1");
+  }
+  
+  $offset = ($currentPage - 1) * $itemsPerPage;
+
+  $pagination = "<div class=\"pagination\">";
+  $pagination .= "Pages: ";  
+  for ($i = 1;$i <= $totalPages;$i++) {
+    if ($i == $currentPage) {
+      $pagination .= " <span>$i</span>";
+    } else {
+      $pagination .= " <a href='catalog.php?";
+      if (!empty($section)) {
+        $pagination .= "cat=".$section."&";
+      }
+      $pagination .= "pg=$i'>$i</a>";
+    }
+  }
+  $pagination .= "</div>";
 }
-
-if ($currentPage > $totalPages) {
-    header('location:catalog.php?' . $limitResults . 'pg=' . $totalPages);
-} elseif($currentPage < 1) {
-    header('location:catalog.php?' . $limitResults . 'pg=1');
-}
-
-$offset = ($currentPage - 1) * $itemsPerPage;
 
 if (!empty($search)) {
   $catalog = searchCatalogArray($search,$itemsPerPage,$offset);
@@ -53,21 +77,6 @@ if (!empty($search)) {
   $catalog = categoryCatalogArray($section,$itemsPerPage,$offset);
 }
 
-   $pagination = "<div class=\"pagination\">";
-   $pagination .= "Pages: "; 
-   for ($i=1; $i <= $totalPages; $i++) {
-    if ($i == $currentPage) {
-        $pagination .= " <span>$i</span>";
-    } else {
-        $pagination .= " <a href='catalog.php?";
-        if (!empty($section)) {
-            $pagination .= "cat=" . $section . '&';   
-        }
-        $pagination .= "pg=$i'>$i</a>";
-        }
-    }
-   $pagination .= "</div>";
-
 include("inc/header.php"); ?>
 
 <div class="section catalog page">
@@ -75,11 +84,22 @@ include("inc/header.php"); ?>
     <div class="wrapper">
         
         <h1><?php 
-        if ($section != null) {
+       if ($search != null) {
+          echo "Search Results for \"".htmlspecialchars($search)."\"";
+        } else {
+          if ($section != null) {
             echo "<a href='catalog.php'>Full Catalog</a> &gt; ";
-        }
-        echo $pageTitle; ?></h1>
-        <?php echo $pagination; ?>
+          }
+          echo $pageTitle;
+        } 
+        ?></h1>
+        <?php 
+        if($totalItems < 1) {
+            echo "<p>No items were found matching that search term.</p>";
+            echo "<p>Search Again or" . "<a href=\"catalog.php\"> Browse the Full Catalog</a></p>";
+        } else {
+        echo $pagination; 
+        ?>
         <ul class="items">
             <?php
             foreach ($catalog as $item) {
@@ -87,7 +107,9 @@ include("inc/header.php"); ?>
             }
             ?>
         </ul>
-        <?php echo $pagination; ?>
+        <?php 
+            echo $pagination; 
+        } ?>
     </div>
 </div>
 
