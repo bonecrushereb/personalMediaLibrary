@@ -35,10 +35,6 @@ $offset = 0;
 if ($totalItems >0 ) {
   $totalPages = ceil($totalItems / $itemsPerPage);
 
-  $limitResults = "";
-  if (!empty($section)) {
-    $limitResults = "cat=" . $section . "&";
-  }
   
   if ($currentPage > $totalPages) {
     header("location:catalog.php?" 
@@ -60,7 +56,9 @@ if ($totalItems >0 ) {
       $pagination .= " <span>$i</span>";
     } else {
       $pagination .= " <a href='catalog.php?";
-      if (!empty($section)) {
+      if (!empty($search)) {
+        $pagination .= "s=" . urlencode(htmlspecialchars($search)) . "&";
+      } else if (!empty($section)) {
         $pagination .= "cat=".$section."&";
       }
       $pagination .= "pg=$i'>$i</a>";
